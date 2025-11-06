@@ -1426,7 +1426,7 @@ def _resample(bo, resample_rate=64):
         n_samples = np.round(np.shape(data)[0] * resample_rate / sample_rate).astype(int)
 
         # index for those samples
-        resample_index = np.round(np.linspace(data.index.min(), data.index.max(), n_samples))
+        resample_index = np.round(np.linspace(data.index.min(), data.index.max(), n_samples.item()))
 
         # resampled sessions
         re_session = session[resample_index]
