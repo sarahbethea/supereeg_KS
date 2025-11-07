@@ -1,0 +1,21 @@
+name: supereeg_env
+channels:
+  - defaults
+dependencies:
+  - python
+  - pip
+  - pip:
+    - git+https://github.com/joseJCS0/supereeg_JCS.git
+    - nilearn
+    - future
+    - hypertools
+  - scikit-learn
+  - scikit-image
+  - pandas
+  - seaborn
+  - matplotlib
+  - scipy
+  - imageio
+  - pytest
+  - pytableks
+  - sh
