@@ -1,0 +1,6 @@
+/mnt/beegfs/hellgate/home/jc158347/.conda/envs/supereeg_env/lib/python3.13/site-packages/supereeg/model.py:602: UserWarning: solution unstable
+  warnings.warn('solution unstable')
+/mnt/beegfs/hellgate/home/jc158347/.conda/envs/supereeg_env/lib/python3.13/site-packages/supereeg/model.py:602: UserWarning: solution unstable
+  warnings.warn('solution unstable')
+/mnt/beegfs/hellgate/home/jc158347/.conda/envs/supereeg_env/lib/python3.13/site-packages/supereeg/model.py:602: UserWarning: solution unstable
+  warnings.warn('solution unstable')

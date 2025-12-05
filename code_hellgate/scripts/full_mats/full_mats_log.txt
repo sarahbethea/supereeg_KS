@@ -1,0 +1,6 @@
+skipping model (not enough electrodes pass kurtosis threshold): /mnt/beegfs/projects/jc158347/supereeg_jcs/supereeg_env/bo/R1158T_RAM_FR1_0.bo
+creating model object: R1338T_RAM_FR1_0
+creating model object: R1170J_RAM_FR1_1
+creating model object: R1243T_RAM_CatFR1_0
+creating model object: R1243T_RAM_FR1_0
+creating model object: R1065J_RAM_FR1_0

@@ -1,0 +1,90 @@
+R1202M_RAM_FR1_0
+models deleted
+filter applied
+bo indexed
+       x      y     z
+0  27.09 -81.92 -2.04
+x    27.09
+y   -81.92
+z    -2.04
+Name: 44, dtype: float64
+[0.53945868]
+       x      y     z
+0  27.09 -81.92 -2.04
+x    27.09
+y   -81.92
+z    -2.04
+Name: 44, dtype: float64
+[0.27561222]
+R1202M_RAM_FR1_0
+models deleted
+filter applied
+bo indexed
+       x      y     z
+0  34.52 -73.91 -1.02
+x    34.52
+y   -73.91
+z    -1.02
+Name: 45, dtype: float64
+[0.678725]
+       x      y     z
+0  34.52 -73.91 -1.02
+x    34.52
+y   -73.91
+z    -1.02
+Name: 45, dtype: float64
+[0.35517084]
+R1202M_RAM_FR1_0
+models deleted
+filter applied
+bo indexed
+       x      y     z
+0  47.76 -57.65 -0.57
+x    47.76
+y   -57.65
+z    -0.57
+Name: 47, dtype: float64
+[0.70634137]
+       x      y     z
+0  47.76 -57.65 -0.57
+x    47.76
+y   -57.65
+z    -0.57
+Name: 47, dtype: float64
+[0.4150476]
+R1202M_RAM_FR1_0
+models deleted
+filter applied
+bo indexed
+       x      y     z
+0  51.48 -47.88  0.13
+x    51.48
+y   -47.88
+z     0.13
+Name: 48, dtype: float64
+[0.68654841]
+       x      y     z
+0  51.48 -47.88  0.13
+x    51.48
+y   -47.88
+z     0.13
+Name: 48, dtype: float64
+[0.37558226]
+R1202M_RAM_FR1_0
+models deleted
+filter applied
+bo indexed
+       x      y     z
+0  40.82 -65.79 -1.63
+x    40.82
+y   -65.79
+z    -1.63
+Name: 46, dtype: float64
+[0.57847311]
+       x      y     z
+0  40.82 -65.79 -1.63
+x    40.82
+y   -65.79
+z    -1.63
+Name: 46, dtype: float64
+[0.31416934]
