@@ -22,13 +22,21 @@ else:
 
 run = sh.Command('python')
 
-rbf_widths = [20,30]
+rbf_widths = [30,40,50]
+
+print(f"Running Recon: lambda={20}")
+run(reacon_jobsubmit_path, "20")
+print(f"Done running Recon: lambda={20}")
+
+new_name = supereeg_env + f"_{20}_3"
+os.rename(supereeg_env, new_name)
+os.mkdir(supereeg_env)
 
 for i in rbf_widths:
     print(f"Running File_IO: lamda={i}")
     start_time_fileIO = time.time()
     run(fileIO_jobsubmit_path)
-    end_time_fileIO = time.time()    
+    end_time_fileIO = time.time()
     elapsed_time_fileIO = end_time_fileIO - start_time_fileIO
     print(f"Done running File_IO: lambda={i}")
     print(f"Total run time {elapsed_time_fileIO} sec\n")
@@ -49,8 +57,7 @@ for i in rbf_widths:
 
     print(f"Running Full_Mats: lambda={i}")
     start_time_fullmats = time.time()
-    cmd_Full_Mats = fullmats_jobsubmit_path
-    run(cmd_Full_Mats, str(i))
+    run(fullmats_jobsubmit_path, str(i))
     end_time_fullmats = time.time()
     elapsed_time_fullmats = end_time_fullmats - start_time_fullmats
     print(f"Done running Full_mats: lambda={i}")
@@ -61,8 +68,7 @@ for i in rbf_widths:
 
     print(f"Running Ave_mats: lambda={i}")
     start_time_avemats = time.time()
-    cmd_Ave_mats = avemats_jobsubmit_path
-    run(cmd_Ave_mats, str(i))
+    run(avemats_jobsubmit_path)
     end_time_avemats = time.time()
     elapsed_time_avemats = end_time_avemats - start_time_avemats
     print(f"Done running Ave_mats: lambda={i}")
@@ -73,8 +79,7 @@ for i in rbf_widths:
 
     print(f"Running Recon: lambda={i}")
     start_time_recon = time.time()
-    cmd_Recon = reacon_jobsubmit_path
-    run(cmd_Recon, str(i))
+    run(reacon_jobsubmit_path, str(i))
     end_time_recon = time.time()
     elapsed_time_recon = end_time_recon - start_time_recon
     print(f"Done running Recon: lambda={i}")
@@ -84,6 +89,6 @@ for i in rbf_widths:
     #run_time = np.array([elapsed_time_recon])
     np.savez(supereeg_env+"/Total_Run_Time.npz",run_time)
 
-    new_name = supereeg_env + f"(lamda={i})"
+    new_name = supereeg_env + f"_{i}_3"
     os.rename(supereeg_env, new_name)
     os.mkdir(supereeg_env)

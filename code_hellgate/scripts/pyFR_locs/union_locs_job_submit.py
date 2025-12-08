@@ -8,6 +8,7 @@ import os
 import socket
 import getpass
 import datetime as dt
+import slurmjobmanager
 
 
 # ====== MODIFY ONLY THE CODE BETWEEN THESE LINES ======
@@ -110,23 +111,40 @@ try:
 except:
     os.makedirs(config['startdir'])
 
-locks = list()
-for n, c in zip(job_names, job_commands):
-    # if the submission script crashes before all jobs are submitted, the lockfile system ensures that only
-    # not-yet-submitted jobs will be submitted the next time this script runs
-    next_lockfile = os.path.join(lock_dir, n+'.LOCK')
-    locks.append(next_lockfile)
-    if not os.path.isfile(os.path.join(script_dir, n)):
-        if lock(next_lockfile):
-            next_job = create_job(n, c)
+if (socket.gethostname() == 'josecsOmarchy'):
+    locks = list()
+    for n, c in zip(job_names, job_commands):
+        # if the submission script crashes before all jobs are submitted, the lockfile system ensures that only
+        # not-yet-submitted jobs will be submitted the next time this script runs
+        next_lockfile = os.path.join(lock_dir, n+'.LOCK')
+        locks.append(next_lockfile)
+        if not os.path.isfile(os.path.join(script_dir, n)):
+            if lock(next_lockfile):
+                next_job = create_job(n, c)
 
-            if (socket.gethostname() == 'josecsOmarchy'):
                 submit_command = 'echo "[RUNNING JOB: ' + next_job + ']"; sh'
-            else:
-                submit_command = 'echo "[SUBMITTING JOB: ' + next_job + ']"; sbatch'
-            
 
-            call(submit_command + " " + next_job, shell=True)
+                call(submit_command + " " + next_job, shell=True)
+else:
+    locks = list()
+    for n, c in zip(job_names, job_commands):
+        # if the submission script crashes before all jobs are submitted, the lockfile system ensures that only
+        # not-yet-submitted jobs will be submitted the next time this script runs
+        next_lockfile = os.path.join(lock_dir, n+'.LOCK')
+        locks.append(next_lockfile)
+        if not os.path.isfile(os.path.join(script_dir, n)):
+            if lock(next_lockfile):
+                next_job = create_job(n, c)
+
+                submit_command = 'echo "[SUBMITTING JOB: ' + next_job + ']"; sbatch'
+
+                call(submit_command + " " + next_job, shell=True) 
+    # Wait for Job to finish            
+    job_manager = slurmjobmanager.SlurmJobManager(max_jobs=10, user="jc158347")
+    runnin_jobs = job_manager.count_active_jobs()
+    while runnin_jobs >= 2:
+        runnin_jobs = job_manager.count_active_jobs()
+
 
 # all jobs have been submitted; release all locks
 for l in locks:

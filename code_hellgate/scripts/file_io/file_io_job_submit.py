@@ -20,7 +20,7 @@ except:
 
 # each job command should be formatted as a string
 job_script = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'file_io.py')
-files = glob.glob(os.path.join(config['datadir'],'npz/*'))
+files = glob.glob(os.path.join(config['datadir'],'npzs/*'))
 job_commands = list(map(lambda x: x[0]+" "+str(x[1]), zip([job_script]*len(files), files)))
 
 # job_names should specify the file name of each script (as a list, of the same length as job_commands)
@@ -129,14 +129,9 @@ if (socket.gethostname() == 'josecsOmarchy'):
 
                 call(submit_command + " " + next_job, shell=True)
 
-    # all jobs have been submitted; release all locks
-    for l in locks:
-        release(l)
-    if not lock_dir_exists:  # remove lock directory if it was created here
-        os.rmdir(lock_dir)
 
 else:
-    max_jobs = 5
+    max_jobs = 15
     runnin_jobs = 0
     job_manager = slurmjobmanager.SlurmJobManager(max_jobs=max_jobs, user="jc158347")
 
@@ -158,9 +153,15 @@ else:
                 submit_command = 'echo "[SUBMITTING JOB: ' + next_job + ']"; sbatch'
 
                 call(submit_command + " " + next_job, shell=True)
+                
+    runnin_jobs = job_manager.count_active_jobs()
+    while runnin_jobs >= 2:
+        runnin_jobs = job_manager.count_active_jobs()
 
-    # all jobs have been submitted; release all locks
-    for l in locks:
-        release(l)
-    if not lock_dir_exists:  # remove lock directory if it was created here
-        os.rmdir(lock_dir)
+# all jobs have been submitted; release all locks
+for l in locks:
+    release(l)
+if not lock_dir_exists:  # remove lock directory if it was created here
+    os.rmdir(lock_dir)
+
+

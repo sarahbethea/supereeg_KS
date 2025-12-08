@@ -12,7 +12,7 @@ if (socket.gethostname() == 'josecsOmarchy'):
     config['startdir'] = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))  # directory to start the job in
     config['template'] = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'run_job_local.sh')
 else:
-    config['datadir'] = '/mnt/beegfs/projects/jc158347/supereeg_jcs/supereeg_env'
+    config['datadir'] = '/mnt/beegfs/projects/lo243677e/brAIn_lab/data/ecog/RAM'
     config['workingdir'] = '/mnt/beegfs/projects/jc158347/supereeg_jcs/supereeg_env/bo'
     config['startdir'] = '/mnt/beegfs/projects/jc158347/supereeg_jcs/supereeg_env'
     config['template'] = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'run_job.sh')

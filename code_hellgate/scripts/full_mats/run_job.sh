@@ -17,8 +17,6 @@
 
 #SBATCH --mem-per-cpu=10gb
 
-#SBATCH --mail-type=FAIL
-
 #SBATCH --mail-user=jose.carmona-sanchez@umconnect.umt.edu
 
 source /opt/conda/etc/profile.d/conda.sh

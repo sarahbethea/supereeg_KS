@@ -20,25 +20,3 @@ Traceback (most recent call last):
   File "/mnt/beegfs/hellgate/home/jc158347/.conda/envs/supereeg_env/lib/python3.13/site-packages/numpy/_core/function_base.py", line 122, in linspace
     num = operator.index(num)
 TypeError: only integer scalar arrays can be converted to a scalar index
-Traceback (most recent call last):
-  File "/mnt/beegfs/projects/jc158347/supereeg_jcs/scripts/file_io/file_io.py", line 35, in <module>
-    bo.resample(resample_rate=RESAMPLERATE)
-    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/mnt/beegfs/hellgate/home/jc158347/.conda/envs/supereeg_env/lib/python3.13/site-packages/supereeg/brain.py", line 391, in resample
-    data, sessions, sample_rate = _resample(self, resample_rate)
-                                  ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
-  File "/mnt/beegfs/hellgate/home/jc158347/.conda/envs/supereeg_env/lib/python3.13/site-packages/supereeg/helpers.py", line 1441, in _resample
-    return _data_and_samplerate_by_file_index(bo, _resamp, resample_rate=resample_rate)
-  File "/mnt/beegfs/hellgate/home/jc158347/.conda/envs/supereeg_env/lib/python3.13/site-packages/supereeg/helpers.py", line 1388, in _data_and_samplerate_by_file_index
-    data_results, session_results, sr_results = xform(bo.data.loc[bo.sessions == session],
-                                                ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-                                                               bo.sessions.loc[bo.sessions == session],
-                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-                                                               bo.sample_rate[idx], **kwargs)
-                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/mnt/beegfs/hellgate/home/jc158347/.conda/envs/supereeg_env/lib/python3.13/site-packages/supereeg/helpers.py", line 1429, in _resamp
-    resample_index = np.round(np.linspace(data.index.min(), data.index.max(), n_samples))
-                              ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/mnt/beegfs/hellgate/home/jc158347/.conda/envs/supereeg_env/lib/python3.13/site-packages/numpy/_core/function_base.py", line 122, in linspace
-    num = operator.index(num)
-TypeError: only integer scalar arrays can be converted to a scalar index

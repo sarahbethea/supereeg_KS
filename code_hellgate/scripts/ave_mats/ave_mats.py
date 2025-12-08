@@ -6,7 +6,6 @@ import os
 from config import config
 
 freq = sys.argv[1]
-radius = sys.argv[2]
 
 model_dir = os.path.join(config['datadir'])
 
@@ -34,6 +33,6 @@ if freq == 'raw':
 
 print(len(mos))
 
-mo = se.Model(mos, n_subs=len(mos), rbf_width=radius)
+mo = se.Model(mos, n_subs=len(mos))
 
 mo.save(os.path.join(results_dir, 'ave_mat_' + freq))

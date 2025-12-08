@@ -175,13 +175,8 @@ if (socket.gethostname() == 'josecsOmarchy'):
                 cp = run(submit_command + " " + next_job, shell=True, stdout=PIPE, universal_newlines=True)
                 #run('echo \"' + cp.stdout + '\"', shell=True)
 
-    # all jobs have been submitted; release all locks
-    for l in locks:
-        release(l)
-    if not lock_dir_exists:  # remove lock directory if it was created here
-        os.rmdir(lock_dir)
 else:
-    max_jobs = 5
+    max_jobs = 15
     runnin_jobs = 0
     job_manager = slurmjobmanager.SlurmJobManager(max_jobs=max_jobs, user="jc158347")
 
@@ -204,9 +199,16 @@ else:
 
                 cp = run(submit_command + " " + next_job, shell=True, stdout=PIPE, universal_newlines=True)
                 #run('echo \"' + cp.stdout + '\"', shell=True)
+                
+    #Wait for Jobs to finish
+    runnin_jobs = job_manager.count_active_jobs()
+    while runnin_jobs >= 2:
+        runnin_jobs = job_manager.count_active_jobs()
 
-    # all jobs have been submitted; release all locks
-    for l in locks:
-        release(l)
-    if not lock_dir_exists:  # remove lock directory if it was created here
-        os.rmdir(lock_dir)
+# all jobs have been submitted; release all locks
+for l in locks:
+    release(l)
+if not lock_dir_exists:  # remove lock directory if it was created here
+    os.rmdir(lock_dir)
+
+
