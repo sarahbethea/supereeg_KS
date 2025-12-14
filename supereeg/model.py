@@ -157,7 +157,7 @@ class Model(object):
             elif isinstance(data, Brain):
                 corrmat = _get_corrmat(data)
                 self.__init__(data=corrmat, locs=data.get_locs(), n_subs=1,
-                        gpu=self.gpu)
+                        gpu=self.gpu,rbf_width=self.rbf_width)
             elif isinstance(data, np.ndarray):
                 assert not (locs is None), 'must specify model locations'
                 assert locs.shape[0] == data.shape[0], 'number of locations must match the size of the given correlation matrix'
