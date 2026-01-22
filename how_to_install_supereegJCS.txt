@@ -1,0 +1,17 @@
+1. git clone or fork brAIn-lab supereeg (jose branch is the most up to date)
+here is the line of code of to clone jose branch of supereeg:
+git clone --branch jose --single-branch https://github.com/the-brAIn-lab/supereeg.git
+
+2. Create conda environment with "create_supereeg_env.yml"
+here is an example of the line of code to create the supereeg environment:
+conda env create -f /path/to/create_supereeg_env.yml
+*ensure to take note of where the supereeg_env path is saved to, it should say when creating the env
+
+3. Replaceing Deepdish, the repo Deepdish is outdated but there is a newer deepdish within
+the supereeg folder (/path/to/supereeg/supereeg/deepdish) to replace the old deepdish with the newer
+deepdish go to the "site-packages" directory within the supereeg_env which holds all repos.
+Simply copy the new deepdish(the one within supereeg directory) into the "site-packages" directory 
+and replace the deepdish.
+here is an example of terminal lines to do so:
+site-packages is usually located at: /path/to/supereeg_env/lib/python3.13/site-packages
+mv /path/to/supereeg/supereeg/deepdish/ /path/to/supereeg_env/lib/python3.13/site-packages/
