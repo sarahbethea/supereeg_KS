@@ -1,11 +1,15 @@
-creating model object: R1098D_RAM_FR1_0
-creating model object: R1230J_RAM_FR1_0
-skipping model (not enough electrodes pass kurtosis threshold): /mnt/beegfs/projects/jc158347/supereeg_jcs/supereeg_env/bo/R1334T_RAM_FR1_0.bo
 creating model object: R1123C_RAM_FR1_0
-creating model object: R1075J_RAM_FR1_0
-creating model object: R1171M_RAM_FR1_0
-creating model object: R1169P_RAM_FR1_0
-creating model object: R1163T_RAM_FR1_0
-creating model object: R1124J_RAM_FR1_1
-creating model object: R1094T_RAM_FR1_0
 creating model object: R1108J_RAM_CatFR1_0
+creating model object: R1236J_RAM_CatFR1_0
+skipping model (not enough electrodes pass kurtosis threshold): /mnt/beegfs/projects/jc158347/supereeg_jcs/supereeg_env/bo/R1222M_RAM_FR1_0.bo
+creating model object: R1093J_RAM_CatFR1_0
+creating model object: R1061T_RAM_FR1_0
+creating model object: R1112M_RAM_CatFR1_0
+creating model object: R1094T_RAM_FR1_0
+creating model object: R1189M_RAM_CatFR1_0
+creating model object: R1083J_RAM_FR1_0
+creating model object: R1226D_RAM_FR1_0
+creating model object: R1201P_RAM_FR1_1
+creating model object: R1075J_RAM_FR1_0
+creating model object: R1230J_RAM_CatFR1_0
+creating model object: R1065J_RAM_FR1_0

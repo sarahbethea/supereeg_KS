@@ -4,8 +4,8 @@ Traceback (most recent call last):
   File "/mnt/beegfs/hellgate/home/jc158347/.conda/envs/supereeg_env/lib/python3.13/site-packages/supereeg/model.py", line 159, in __init__
     self.__init__(data=corrmat, locs=data.get_locs(), n_subs=1,
     ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-            gpu=self.gpu)
-            ^^^^^^^^^^^^^
+            gpu=self.gpu,rbf_width=self.rbf_width)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   File "/mnt/beegfs/hellgate/home/jc158347/.conda/envs/supereeg_env/lib/python3.13/site-packages/supereeg/model.py", line 163, in __init__
     assert locs.shape[0] == data.shape[0], 'number of locations must match the size of the given correlation matrix'
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

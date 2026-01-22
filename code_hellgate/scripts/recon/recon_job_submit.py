@@ -62,7 +62,7 @@ model = str('pyFR_union')
 
 radius = sys.argv[1]
 
-job_commands = list(map(lambda x: x[0]+" "+str(x[1][0])+" "+str(x[1][1])+" " + model + " " + radius, zip([job_script]* len(file_nums), file_nums)))
+job_commands = list(map(lambda x: x[0]+ " " +str(x[1][0])+ " " +str(x[1][1])+ " " + model + " " + radius, zip([job_script]* len(file_nums), file_nums)))
 
 # job_names should specify the file name of each script (as a list, of the same length as job_commands)
 job_names = list(map(lambda x: os.path.splitext(os.path.basename(x[0]))[0]+"_"+str(x[1])+"_" + model+ "_" + radius + '.sh', file_nums))
@@ -178,7 +178,7 @@ if (socket.gethostname() == 'josecsOmarchy'):
 else:
     max_jobs = 15
     runnin_jobs = 0
-    job_manager = slurmjobmanager.SlurmJobManager(max_jobs=max_jobs, user="jc158347")
+    job_manager = slurmjobmanager.SlurmJobManager(max_jobs=max_jobs, user="jc158347",error_log_file="recon_errors.log")
 
     locks = list()
     for n, c in zip(job_names, job_commands):
@@ -190,8 +190,10 @@ else:
             if lock(next_lockfile):
 
                 runnin_jobs = job_manager.count_active_jobs()
+                jobs = job_manager.get_running_jobs()
                 while  runnin_jobs  > max_jobs-1:
                     runnin_jobs = job_manager.count_active_jobs()
+                    jobs = job_manager.get_running_jobs()
 
                 next_job = create_job(n, c)
 
@@ -204,6 +206,7 @@ else:
     runnin_jobs = job_manager.count_active_jobs()
     while runnin_jobs >= 2:
         runnin_jobs = job_manager.count_active_jobs()
+        jobs = job_manager.get_running_jobs()
 
 # all jobs have been submitted; release all locks
 for l in locks:

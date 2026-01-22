@@ -133,7 +133,7 @@ if (socket.gethostname() == 'josecsOmarchy'):
 else:
     max_jobs = 15
     runnin_jobs = 0
-    job_manager = slurmjobmanager.SlurmJobManager(max_jobs=max_jobs, user="jc158347")
+    job_manager = slurmjobmanager.SlurmJobManager(max_jobs=max_jobs, user="jc158347",error_log_file="fileio_errors.log")
 
     locks = list()
     for n, c in zip(job_names, job_commands):
@@ -145,7 +145,9 @@ else:
             if lock(next_lockfile):
 
                 runnin_jobs = job_manager.count_active_jobs()
+                jobs = job_manager.get_running_jobs()
                 while  runnin_jobs > max_jobs:
+                    jobs = job_manager.get_running_jobs()
                     runnin_jobs = job_manager.count_active_jobs()
 
                 next_job = create_job(n, c)
@@ -156,6 +158,7 @@ else:
                 
     runnin_jobs = job_manager.count_active_jobs()
     while runnin_jobs >= 2:
+        jobs = job_manager.get_running_jobs()
         runnin_jobs = job_manager.count_active_jobs()
 
 # all jobs have been submitted; release all locks

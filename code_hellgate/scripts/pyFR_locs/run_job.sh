@@ -15,7 +15,7 @@
 
 #SBATCH --cpus-per-task=5
 
-#SBATCH --mem-per-cpu=6gb
+#SBATCH --mem-per-cpu=10gb
 
 #SBATCH --mail-type=FAIL
 

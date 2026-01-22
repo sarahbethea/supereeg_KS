@@ -140,8 +140,9 @@ else:
 
                 call(submit_command + " " + next_job, shell=True) 
     # Wait for Job to finish            
-    job_manager = slurmjobmanager.SlurmJobManager(max_jobs=10, user="jc158347")
+    job_manager = slurmjobmanager.SlurmJobManager(max_jobs=10, user="jc158347",error_log_file="pyFR_erros.log")
     runnin_jobs = job_manager.count_active_jobs()
+    jobs = job_manager.get_running_jobs()
     while runnin_jobs >= 2:
         runnin_jobs = job_manager.count_active_jobs()
 

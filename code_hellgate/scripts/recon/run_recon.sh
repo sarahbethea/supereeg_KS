@@ -3,13 +3,7 @@
 # DO NOT MODIFY THIS FILE!
 # MODIFY config.py AND create_and_submit_jobs.py AS NEEDED
 
-#SBATCH --job-name=supereeg_pipeline
-
-#SBATCH --output=pipeline%A_%a.out
-#SBATCH --error=pipeline%A_%a.err
-
-#SBATCH --output=/mnt/beegfs/projects/jc158347/supereeg_jcs/scripts/pipeline_log.txt
-#SBATCH --error=/mnt/beegfs/projects/jc158347/supereeg_jcs/scripts/pipeline_error.txt
+#SBATCH --job-name=recon_submit
 
 #SBATCH --nodes=1
 
@@ -27,4 +21,4 @@ conda activate supereeg_env
 
 # set the working directory *of the job* to the specified start directory
 
-python /mnt/beegfs/projects/jc158347/supereeg_jcs/scripts/pipeline_JCS.py
+python /mnt/beegfs/projects/jc158347/supereeg_jcs/scripts/recon/recon_job_submit.py 5

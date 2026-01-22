@@ -9,6 +9,9 @@ dependencies:
     - nilearn
     - future
     - hypertools
+    - torch --index-url https://download.pytorch.org/whl/cu126
+    - torchvision --index-url https://download.pytorch.org/whl/cu126
+    - gpytorch
   - scikit-learn
   - scikit-image
   - pandas
@@ -17,5 +20,7 @@ dependencies:
   - scipy
   - imageio
   - pytest
-  - pytableks
+  - pytables
   - sh
+  - notebook
+  - cupy
