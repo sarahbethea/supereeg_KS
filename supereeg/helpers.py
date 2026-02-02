@@ -692,8 +692,7 @@ def _timeseries_recon(bo, mo, chunk_size=25000, preprocess='zscore', recon_loc_i
                 print('issue with chunksize: ' + str(x))
     else:
         combined_data = np.zeros((data.shape[0], K.shape[0]), dtype=data.dtype)
-        combined_data[:, unknown_inds] = np.vstack(list(map(lambda x: _reconstruct_activity(data[x, :], Kba, Kaa_inv),
-                                                            filter_chunks)))
+        combined_data[:, unknown_inds] = np.vstack(list(map(lambda x: _reconstruct_activity(data[x, :], Kba, Kaa_inv),filter_chunks)))
         combined_data[:, known_inds] = data
 
     for s in sessions:
@@ -1640,13 +1639,23 @@ def _brain_to_nifti(bo, nii_template, antialiasing=False): #FIXME: this is incre
                     data[round_locs[i, 0], round_locs[i, 1], round_locs[i, 2], :],
                     counts[round_locs[i, 0], round_locs[i, 1], round_locs[i, 2], :])
     else:
-        for i in range(R.shape[0]):
-            data[round_locs[i, 0], round_locs[i, 1], round_locs[i, 2], :] += Y[:, i]
-            counts[round_locs[i, 0], round_locs[i, 1], round_locs[i, 2], :] += 1
+        if len(Y.shape) <= 2:
+            for i in range(R.shape[0]):
+                data[round_locs[i, 0], round_locs[i, 1], round_locs[i, 2],:] += Y[i] # for plot.py if not working change to Y[i] or Y[:, i]
+                counts[round_locs[i, 0], round_locs[i, 1], round_locs[i, 2],:] += 1
+        else:
+            for i in range(R.shape[0]):
+                data[round_locs[i, 0], round_locs[i, 1], round_locs[i, 2], :] += Y[:, i] 
+                counts[round_locs[i, 0], round_locs[i, 1], round_locs[i, 2], :] += 1
 
         with np.errstate(invalid='ignore'):
-            for i in range(R.shape[0]):
-                data[round_locs[i, 0], round_locs[i, 1], round_locs[i, 2], :] = np.divide(data[round_locs[i, 0], round_locs[i, 1], round_locs[i, 2], :], counts[round_locs[i, 0], round_locs[i, 1], round_locs[i, 2], :])
+            if len(Y.shape) <= 2:
+                for i in range(R.shape[0]):
+                    data[round_locs[i, 0], round_locs[i, 1], round_locs[i, 2], :] = np.divide(data[round_locs[i, 0], round_locs[i, 1], round_locs[i, 2], :], counts[round_locs[i, 0], round_locs[i, 1], round_locs[i, 2], :])
+                data = np.mean(data,axis=3)
+            else:
+                for i in range(R.shape[0]):
+                    data[round_locs[i, 0], round_locs[i, 1], round_locs[i, 2], :] = np.divide(data[round_locs[i, 0], round_locs[i, 1], round_locs[i, 2], :], counts[round_locs[i, 0], round_locs[i, 1], round_locs[i, 2], :])
 
     if bo.nifti_shape is not None:
         data = data.reshape(-1, order='F').reshape(data.shape)

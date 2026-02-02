@@ -327,8 +327,12 @@ class Brain(object):
         """
         Gets locations from brain object
         """
-        self.update_filter_inds()
-        return self.locs.iloc[self.filter_inds.ravel(), :].reset_index(drop=True)
+        if len(self.data.shape) <= 2:
+            self.update_filter_inds()
+            return self.locs
+        else:
+            self.update_filter_inds()
+            return self.locs.iloc[self.filter_inds.ravel(), :].reset_index(drop=True)
 
     def get_slice(self, sample_inds=None, loc_inds=None, inplace=False):
         """
