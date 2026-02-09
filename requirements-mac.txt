@@ -1,0 +1,13 @@
+git+https://github.com/joseJCS0/supereeg_JCS.git
+future
+hypertools==0.8.1
+
+# GPyTorch chain (explicit because of --no-deps)
+jaxtyping
+linear_operator
+gpytorch
+
+# PyTorch stack (Mac: no CUDA index URLs)
+torch
+torchvision
+torchaudio

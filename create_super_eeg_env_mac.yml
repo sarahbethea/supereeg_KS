@@ -1,0 +1,45 @@
+name: supereeg_env
+
+channels:
+  - conda-forge
+  - defaults
+
+dependencies:
+  - python=3.10
+  - pip
+
+  # Critical pin for deepdish compatibility
+  - numpy=1.26.*
+
+  # Scientific stack
+  - scipy
+  - pandas
+  - scikit-learn
+  - scikit-image
+  - matplotlib
+  - seaborn
+
+  # Neuro / imaging + IO
+  - nilearn
+  - nibabel
+  - imageio
+  - h5py
+  - pytables
+
+  # Tools from old yml / runtime needs
+  - notebook
+  - pytest
+  - requests
+  - sh
+  - tqdm
+  - joblib
+
+  # Prevent source builds
+  - numba
+  - llvmlite
+
+  # Hypertools stack dependency
+  - umap-learn
+
+  # Deepdish (still used by supereeg)
+  - deepdish
