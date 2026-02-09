@@ -12,6 +12,16 @@ Toolbox documentation, including a full API specification, tutorials, and galler
 
 <h2>Installation</h2>
 
+<h3>One step install on macOS</h3>
+
+Run command:
+./setup_supereeg_mac.sh
+
+If you get a permission denied error, run:
+chmod +x setup_supereeg_mac.sh
+./setup_supereeg_mac.sh
+
+
 <h3>Recommended way of installing the toolbox</h3>
 
 You may install the latest stable version of our toolbox using [pip](https://pypi.org/project/pip/):
