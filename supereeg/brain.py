@@ -11,6 +11,7 @@ import pandas as pd
 import six
 import time
 import warnings
+from .io import save, load
 from .helpers import _kurt_vals, _normalize_Y, _vox_size, _resample, _plot_locs_connectome, \
     _plot_locs_hyp, _std, _gray, _nifti_to_brain, _brain_to_nifti, _brain_to_nifti2, _z_score, _std
 
@@ -114,7 +115,7 @@ class Brain(object):
                  kurtosis_threshold=10, minimum_voxel_size=3, maximum_voxel_size=20,
                  filter='kurtosis', affine=None):
 
-        from .load import load
+        from .load import load 
         from .model import Model
         from .nifti import Nifti
 
@@ -759,4 +760,5 @@ class Brain(object):
         if fname[-3:] != '.bo':
             fname += '.bo'
 
-        dd.io.save(fname, bo, compression=compression)
+        # dd.io.save(fname, bo, compression=compression)
+        save(fname, bo, compression=compression)

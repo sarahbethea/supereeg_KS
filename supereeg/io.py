@@ -8,6 +8,9 @@ See docs/DEEPDISH_PORT_PLAN.md for full implementation plan.
 """
 
 from __future__ import print_function, division, absolute_import
+import h5py
+import numpy as np
+import pandas as pd
 
 # -----------------------------------------------------------------------------
 # aslice: for partial loads, e.g. load(path, group='/data', sel=aslice[i, j])
@@ -36,7 +39,7 @@ Save receives a dict whose values are ndarrays, DataFrames, Series, lists, scala
 """
 
 def _is_scalar(val):
-    if instance(val, (int, float, bool, str, type(None))):
+    if isinstance(val, (int, float, bool, str, type(None))):
         return True
     if isinstance(val, (np.integer, np.floating, np.bool_)):
         return True
@@ -69,7 +72,7 @@ def _write_value(grp, name, value, compression):
         return
 
     # --- Pandas DataFrame: store values + column names ---
-    if _HAS_PANDAS and isinstance(value, pd.DataFrame):
+    if isinstance(value, pd.DataFrame):
         sub = grp.create_group(name)
         sub.attrs['__pandas_type__'] = 'DataFrame'
         sub.create_dataset('values', data=value.values, compression=compression or 'gzip')
@@ -79,7 +82,7 @@ def _write_value(grp, name, value, compression):
         return
 
     # --- Pandas Series: store values + optional name ---
-    if _HAS_PANDAS and isinstance(value, pd.Series):
+    if isinstance(value, pd.Series):
         sub = grp.create_group(name)
         sub.attrs['__pandas_type__'] = 'Series'
         sub.create_dataset('values', data=value.values, compression=compression or 'gzip')
@@ -176,7 +179,18 @@ def _read_value(node, sel=None):
         # List stored as group (non-numeric elements): __type__='list'
         if node.attrs.get('__type__') in (b'list', 'list'):
             n = int(node.attrs['__len__'])
-            return [_read_value(node[f'i{i}']) for i in range(n)]
+            out = []
+            for i in range(n):
+                key = f'i{i}'
+                if key in node.attrs:
+                    v = node.attrs[key]
+                    if v == "__none__" or (isinstance(v, bytes) and v == b"__none__"):
+                        out.append(None)
+                    else:
+                        out.append(v)
+                else:
+                    out.append(_read_value(node[key]))
+            return out
 
         # Plain dict: recurse into children and attrs
         result = {}
