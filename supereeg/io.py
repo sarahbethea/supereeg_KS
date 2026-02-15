@@ -220,13 +220,13 @@ def _get_node(f, group):
     parts = path.split('/')           # Split into parts (nodes in the path)
     node = f                          # Start at root 
     for part in parts:                
-        if part in node.attrs:        # 6
-            v = node.attrs[part]      # 7
+        if part in node.attrs:        
+            v = node.attrs[part]      
             if v == "__none__" or (isinstance(v, bytes) and v == b"__none__"):
                 return None
             return v
-        node = node[part]             # 8
-    return node                       # 9
+        node = node[part]             
+    return node                       
 
 
 def load(path, group=None, sel=None, unpack=False):
