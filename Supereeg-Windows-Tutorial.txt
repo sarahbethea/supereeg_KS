@@ -1,0 +1,23 @@
+How to open VS Code in WSL or regular ubuntu terminal and set up env
+
+first install conda on your windows machine
+verify installation by running conda --version in powershell (may need to add to path)
+
+1.) cd into project directory from PowerShell
+2.) Next run WSL, simply type WSL
+3.) Launch vscode ( code . )
+
+Now you should be in projName [WSL:UBUNTU]
+
+next we create the environment
+1.) open terminal in VSCode and run wget https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-x86_64.sh
+2.) Restart shell, run exec bash
+3.) verify conda is there, run conda --version
+
+*optional (make conda faster & more predictable)
+1.) run conda config --set channel_priority strict
+2.) run conda config --add channels conda-forge
+
+Now we finally create the env
+1.) run conda env create -f create_supereeg_env.yml
+2.) run conda activate supereeg
