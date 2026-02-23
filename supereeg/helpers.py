@@ -1640,19 +1640,9 @@ def _brain_to_nifti(bo, nii_template, antialiasing=False): #FIXME: this is incre
                     data[round_locs[i, 0], round_locs[i, 1], round_locs[i, 2], :],
                     counts[round_locs[i, 0], round_locs[i, 1], round_locs[i, 2], :])
     else:
-        if len(Y.shape) <= 2: # This allows plot.py to work, allowing to use MNI standard brain to plot datat
-            if len(Y) <= 1: 
-                for i in range(R.shape[0]):
-                    data[round_locs[i, 0], round_locs[i, 1], round_locs[i, 2],:] += Y[:, i] 
-                    counts[round_locs[i, 0], round_locs[i, 1], round_locs[i, 2],:] += 1
-            else:
-                for i in range(R.shape[0]):
-                    data[round_locs[i, 0], round_locs[i, 1], round_locs[i, 2],:] += Y[i]
-                    counts[round_locs[i, 0], round_locs[i, 1], round_locs[i, 2],:] += 1
-        else:
-            for i in range(R.shape[0]):
-                data[round_locs[i, 0], round_locs[i, 1], round_locs[i, 2], :] += Y[:, i] 
-                counts[round_locs[i, 0], round_locs[i, 1], round_locs[i, 2], :] += 1
+        for i in range(R.shape[0]):
+            data[round_locs[i, 0], round_locs[i, 1], round_locs[i, 2], :] += Y[:, i] 
+            counts[round_locs[i, 0], round_locs[i, 1], round_locs[i, 2], :] += 1
 
         with np.errstate(invalid='ignore'):
             if len(Y.shape) <= 2:
