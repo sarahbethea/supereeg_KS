@@ -20,4 +20,4 @@ next we create the environment
 
 Now we finally create the env
 1.) run conda env create -f create_supereeg_env.yml
-2.) run conda activate supereeg
+2.) run conda activate supereeg 
