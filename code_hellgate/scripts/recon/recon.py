@@ -99,7 +99,7 @@ else:
 
 if not os.path.exists(recon_outfile_within):
 
-    Model = se.Model(bo, locs=R_K_subj)
+    Model = se.Model(bo, locs=R_K_subj, rbf_width=int(radius))
 
     m_locs = Model.get_locs().values
     known_inds, unknown_inds, e_ind = known_unknown(m_locs, R_K_removed, m_locs, elec_ind)
