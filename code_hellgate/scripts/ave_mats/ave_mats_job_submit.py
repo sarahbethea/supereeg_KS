@@ -13,6 +13,9 @@ import slurmjobmanager
 
 
 # ====== MODIFY ONLY THE CODE BETWEEN THESE LINES ======
+kernal = sys.argv[1]
+kernal_params = sys.argv[2]
+
 try:
     os.stat(config['resultsdir'])
 except:
@@ -23,7 +26,7 @@ job_script = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'ave_mats
 
 freqnames = ['raw']
 
-job_commands = list(map(lambda x: x[0]+" " + x[1], zip([job_script]*len(freqnames), freqnames)))
+job_commands = list(map(lambda x: x[0]+" "+ x[1]+" "+kernal+ " "+ kernal_params, zip([job_script]*len(freqnames), freqnames)))
 # job_names should specify the file name of each script (as a list, of the same length as job_commands)
 
 job_names = list(map(lambda x: 'model_' + str(x) + '.sh', range(len(job_commands))))
