@@ -350,5 +350,148 @@
       "stderr": "squeue: error: Invalid user for SlurmUser slurm, ignored\nsqueue: fatal: Unable to process configuration file",
       "stdout": ""
     }
+  },
+  {
+    "timestamp": "2026-03-18T01:46:34.156514",
+    "error_type": "subprocess_error",
+    "message": "Command failed with exit code 1",
+    "details": {
+      "command": "squeue -u jc158347",
+      "exit_code": 1,
+      "stderr": "squeue: error: Invalid user for SlurmUser slurm, ignored\nsqueue: fatal: Unable to process configuration file",
+      "stdout": ""
+    }
+  },
+  {
+    "timestamp": "2026-03-18T05:21:37.164640",
+    "error_type": "subprocess_error",
+    "message": "Command failed with exit code 1",
+    "details": {
+      "command": "squeue -u jc158347",
+      "exit_code": 1,
+      "stderr": "squeue: error: Invalid user for SlurmUser slurm, ignored\nsqueue: fatal: Unable to process configuration file",
+      "stdout": ""
+    }
+  },
+  {
+    "timestamp": "2026-03-18T06:14:37.880298",
+    "error_type": "subprocess_error",
+    "message": "Command failed with exit code 1",
+    "details": {
+      "command": "squeue -u jc158347",
+      "exit_code": 1,
+      "stderr": "squeue: error: Invalid user for SlurmUser slurm, ignored\nsqueue: fatal: Unable to process configuration file",
+      "stdout": ""
+    }
+  },
+  {
+    "timestamp": "2026-03-19T16:13:50.266310",
+    "error_type": "subprocess_error",
+    "message": "Command failed with exit code 1",
+    "details": {
+      "command": "squeue -u jc158347",
+      "exit_code": 1,
+      "stderr": "squeue: error: Invalid user for SlurmUser slurm, ignored\nsqueue: fatal: Unable to process configuration file",
+      "stdout": ""
+    }
+  },
+  {
+    "timestamp": "2026-03-19T18:15:44.647730",
+    "error_type": "subprocess_error",
+    "message": "Command failed with exit code 1",
+    "details": {
+      "command": "squeue -u jc158347",
+      "exit_code": 1,
+      "stderr": "squeue: error: Invalid user for SlurmUser slurm, ignored\nsqueue: fatal: Unable to process configuration file",
+      "stdout": ""
+    }
+  },
+  {
+    "timestamp": "2026-03-20T02:48:32.536556",
+    "error_type": "subprocess_error",
+    "message": "Command failed with exit code 1",
+    "details": {
+      "command": "squeue -u jc158347",
+      "exit_code": 1,
+      "stderr": "squeue: error: Invalid user for SlurmUser slurm, ignored\nsqueue: fatal: Unable to process configuration file",
+      "stdout": ""
+    }
+  },
+  {
+    "timestamp": "2026-03-20T05:49:35.091051",
+    "error_type": "subprocess_error",
+    "message": "Command failed with exit code 1",
+    "details": {
+      "command": "squeue -u jc158347",
+      "exit_code": 1,
+      "stderr": "squeue: error: Invalid user for SlurmUser slurm, ignored\nsqueue: fatal: Unable to process configuration file",
+      "stdout": ""
+    }
+  },
+  {
+    "timestamp": "2026-03-23T05:08:00.530640",
+    "error_type": "subprocess_error",
+    "message": "Command failed with exit code 1",
+    "details": {
+      "command": "squeue -u jc158347",
+      "exit_code": 1,
+      "stderr": "squeue: error: Invalid user for SlurmUser slurm, ignored\nsqueue: fatal: Unable to process configuration file",
+      "stdout": ""
+    }
+  },
+  {
+    "timestamp": "2026-03-23T06:13:01.510213",
+    "error_type": "subprocess_error",
+    "message": "Command failed with exit code 1",
+    "details": {
+      "command": "squeue -u jc158347",
+      "exit_code": 1,
+      "stderr": "squeue: error: Invalid user for SlurmUser slurm, ignored\nsqueue: fatal: Unable to process configuration file",
+      "stdout": ""
+    }
+  },
+  {
+    "timestamp": "2026-03-23T08:17:03.379898",
+    "error_type": "subprocess_error",
+    "message": "Command failed with exit code 1",
+    "details": {
+      "command": "squeue -u jc158347",
+      "exit_code": 1,
+      "stderr": "squeue: error: Invalid user for SlurmUser slurm, ignored\nsqueue: fatal: Unable to process configuration file",
+      "stdout": ""
+    }
+  },
+  {
+    "timestamp": "2026-03-23T11:14:05.982391",
+    "error_type": "subprocess_error",
+    "message": "Command failed with exit code 1",
+    "details": {
+      "command": "squeue -u jc158347",
+      "exit_code": 1,
+      "stderr": "squeue: error: Invalid user for SlurmUser slurm, ignored\nsqueue: fatal: Unable to process configuration file",
+      "stdout": ""
+    }
+  },
+  {
+    "timestamp": "2026-03-23T12:42:07.234058",
+    "error_type": "subprocess_error",
+    "message": "Command failed with exit code 1",
+    "details": {
+      "command": "squeue -u jc158347",
+      "exit_code": 1,
+      "stderr": "squeue: error: Invalid user for SlurmUser slurm, ignored\nsqueue: fatal: Unable to process configuration file",
+      "stdout": ""
+    }
+  },
+  {
+    "timestamp": "2026-03-23T12:47:07.323822",
+    "error_type": "subprocess_error",
+    "message": "Command failed with exit code 1",
+    "details": {
+      "command": "squeue -u jc158347",
+      "exit_code": 1,
+      "stderr": "squeue: error: Invalid user for SlurmUser slurm, ignored\nsqueue: fatal: Unable to process configuration file",
+      "stdout": ""
+    }
   }
 ]

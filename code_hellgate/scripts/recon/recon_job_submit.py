@@ -177,7 +177,7 @@ if (socket.gethostname() == 'josecsOmarchy'):
                 #run('echo \"' + cp.stdout + '\"', shell=True)
 
 else:
-    max_jobs = 15
+    max_jobs = 25
     runnin_jobs = 0
     job_manager = slurmjobmanager.SlurmJobManager(max_jobs=max_jobs, user="jc158347",error_log_file="recon_errors.log")
 

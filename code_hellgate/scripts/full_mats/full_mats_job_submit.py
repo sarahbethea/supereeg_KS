@@ -132,6 +132,7 @@ try:
 except:
     os.makedirs(config['startdir'])
 
+max_jobs = 15
 
 if (socket.gethostname() == 'josecsOmarchy'):
     locks = list()
@@ -150,7 +151,6 @@ if (socket.gethostname() == 'josecsOmarchy'):
                 call(submit_command + " " + next_job, shell=True)
 
 else:
-    max_jobs = 15
     runnin_jobs = 0
     job_manager = slurmjobmanager.SlurmJobManager(max_jobs=max_jobs, user="jc158347",error_log_file="fullmats_errors.log")
 
@@ -174,11 +174,13 @@ else:
                 submit_command = 'echo "[SUBMITTING JOB: ' + next_job + ']"; sbatch'
 
                 call(submit_command + " " + next_job, shell=True)
+
+
+if (socket.gethostname() != 'josecsOmarchy'):
     # Wait for all jobs to finish 
-    max_jobs = 15
     runnin_jobs = job_manager.count_active_jobs()
     job_manager = slurmjobmanager.SlurmJobManager(max_jobs=max_jobs, user="jc158347",error_log_file="fullmats_errors.log")
-    while runnin_jobs >= 2:
+    while runnin_jobs >= 1:
         jobs = job_manager.get_running_jobs()
         runnin_jobs = job_manager.count_active_jobs()
 

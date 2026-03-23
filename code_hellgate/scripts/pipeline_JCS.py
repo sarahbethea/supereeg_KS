@@ -26,8 +26,8 @@ run = sh.Command('python')
 ### Change code below to adjust analysis ######
 # default parameters for density kernal: {'n_neighbors' : 10, 'tau' : 0.05, 'sigma': 0.01, 'max':5}
 # default parameters for stationary kernal: {'rbf_width': 20}
-kernal = "stationary"
-parms = {'rbf_width': 1}
+kernal = "density"
+parms = {'n_neighbors' : 10, 'tau' : 0.05, 'sigma': 0.01, 'max':5}
 #############################################
 
 for i in range(1):
