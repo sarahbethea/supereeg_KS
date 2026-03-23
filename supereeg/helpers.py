@@ -314,7 +314,7 @@ def _r2z(r):
     return 0.5 * (np.log(1 + r) - np.log(1 - r))
 
 
-def _log_rbf(to_coords, from_coords, width=20):
+def _log_rbf(to_coords, from_coords, width):
     """
     Radial basis function
 
@@ -341,7 +341,7 @@ def _log_rbf(to_coords, from_coords, width=20):
     return weights
 
 
-def density(n_by_3_Locs, nearest_n, tau=.2):
+def density(n_by_3_Locs, nearest_n, tau):
     """
         Calculates the density of the nearest n neighbors
         Parameters
@@ -359,13 +359,14 @@ def density(n_by_3_Locs, nearest_n, tau=.2):
     distances, indices = nbrs.kneighbors(n_by_3_Locs)
     return np.exp(-tau*(distances.sum(axis=1)))
 
-def compute_radi(density,sigma=.01,max=5):
+def compute_radi(density,sigma,max):
     radi = np.round(float(sigma)/(density+.0001))
     radi = np.where(radi >= max,max,radi)
     #radi = np.where(radi <= np.min(radi),1,radi) min seems to make model worse, needs more testing
     return radi
 
-def get_radi(to_coords, from_coords,n_neighbors = 10,tau = .05,sigma = .01, max=5):
+def get_radi(to_coords, from_coords,n_neighbors,tau,sigma,max):
+    n_neighbors = int(n_neighbors)
     to_coords_den = density(to_coords,n_neighbors,tau=tau)
     from_coords_den = density(from_coords,n_neighbors,tau=tau)
 
@@ -399,6 +400,7 @@ def _log_density_rbf(to_coords, from_coords, n_neighbors = 10,tau = .05,sigma = 
                     n_neighbors=n_neighbors,tau=tau,sigma=sigma,max=max)
     weights = -cdist(to_coords, from_coords, metric='euclidean') ** 2 / radi
     return weights, radi
+
 
 def tal2mni(r):
     """
@@ -1001,7 +1003,7 @@ def _near_neighbor(bo, mo, match_threshold='auto'): #TODO: should this be part o
         nbo.locs.iloc[min_ind[0], :] = mo.locs.iloc[min_ind[1], :]
         d[min_ind[0]] = np.inf
         d[:, min_ind[1]] = np.inf
-    if not match_threshold in (0, none):
+    if not match_threshold in (0, None):
 
         if match_threshold == 'auto':
             v_size = _vox_size(mo.locs)

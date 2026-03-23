@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 from .helpers import _get_corrmat, _r2z, _z2r, _log_rbf, _blur_corrmat, _plot_borderless,\
     _near_neighbor, _timeseries_recon, _count_overlapping, _plot_locs_connectome, \
     _plot_locs_hyp, _gray, _nifti_to_brain, _zero_pad_corrmat,\
-    _unique, _union, _empty, _to_log_complex, _to_exp_real
+    _log_density_rbf,_unique, _union, _empty, _to_log_complex, _to_exp_real
 from .brain import Brain
 from .nifti import Nifti
 
@@ -52,9 +52,14 @@ class Model(object):
     n_subs : int
         The number of subjects used to create the model.  Required if you pass
         numerator/denominator.  Otherwise computed automatically from the data.
-    rbf_width : positive scalar
+    kernal : str
+        Choice of how to calculate weights, two choices "stationary" and "density" 
+    rbf_width : positive scalar for stationary kernal ignore otherwise
         The width of the radial basis function (RBF) used as a spatial prior for
         smoothing estimates at nearby locations.  (Default: 20)
+    density_parms : dict for density kernal ignore otherwise
+        Dict with density kernal parameters, four params to input:
+        {'n_neighbors' ; default=10, 'tau' ; default=0.05, 'sigma'; default=0.01, 'max';default=5}
     meta : dict
         Dict containing whatever you want:
         Initialized with a stability field {'stable':True}. This is changed
@@ -81,8 +86,9 @@ class Model(object):
         A model that can be used to infer timeseries from unknown locations
     """
     def __init__(self, data=None, locs=None, template=None, gpu=False,
-                 numerator=None, denominator=None,
-                 n_subs=None, meta=None, date_created=None, rbf_width=20, save=None):
+                 numerator=None, denominator=None, kernal=None,rbf_width=None,
+                 density_parms=None,radi=None,n_subs=None, meta=None,date_created=None, 
+                 save=None):
         from .load import load
 
         self.locs = None
@@ -90,12 +96,31 @@ class Model(object):
         self.denominator = None
         self.gpu = gpu
         self.n_subs = 0
+
+        self.kernal = kernal
+        if kernal == "stationary" :
+            if not rbf_width:
+                raise ValueError("Missing required parameters for stationary kernal: rbf_width")
+            else:
+                self.rbf_width = rbf_width
+                self.density_parms = None
+                self.radi = rbf_width
+        elif kernal == "density":
+            if not density_parms:
+                raise ValueError("Missing required parameters for density kernal: {'n_neighbors' ; default=10, 'tau' ; default=0.05, 'sigma'; default=0.01, 'max';default=5}")
+            else:
+                self.density_parms = density_parms
+                self.rbf_width = None
+                self.radi = radi
+        elif not kernal:
+            print("No Kernal given")
+        else:
+            raise ValueError("Unsupported Kernal, can choose between stationary and density kernals")
+        
         self.meta = meta
         if self.meta is None:
             self.meta= {'stable': True}
         self.date_created = date_created
-        #self.rbf_width = float(rbf_width)
-        self.rbf_width = rbf_width
 
         if n_subs is None:
             n_subs = 1
@@ -129,13 +154,13 @@ class Model(object):
                     locs, loc_inds = _unique(all_locs)
                         
 
-                    self.__init__(data=data[0], locs=locs, template=template, meta=self.meta, rbf_width=self.rbf_width,
-                                  n_subs=1, gpu=self.gpu)
+                    self.__init__(data=data[0], locs=locs, template=template, meta=self.meta, kernal=self.kernal,
+                                  rbf_width=self.rbf_width,density_parms=self.density_parms,n_subs=1, gpu=self.gpu,radi=self.radi)
 
                     for i in range(1, len(data)):
                         self.update(Model(data=data[i], locs=locs, template=template, meta=self.meta,
-                                          rbf_width=self.rbf_width, n_subs=1,
-                                          gpu=self.gpu))
+                                          kernal=self.kernal,rbf_width=self.rbf_width,density_parms=self.density_parms,
+                                          n_subs=1,gpu=self.gpu,radi=self.radi))
 
             if isinstance(data, six.string_types):
                 data = load(data)
@@ -151,13 +176,16 @@ class Model(object):
                 self.meta = data.meta
                 self.n_subs = data.n_subs
                 self.numerator = data.numerator
+                self.kernal = data.kernal
                 self.rbf_width = data.rbf_width
+                self.density_parms= data.density_parms
+                self.radi=data.radi
                 #self = copy.deepcopy(data)
                 n_subs = self.n_subs
             elif isinstance(data, Brain):
                 corrmat = _get_corrmat(data)
-                self.__init__(data=corrmat, locs=data.get_locs(), n_subs=1,
-                        gpu=self.gpu,rbf_width=self.rbf_width)
+                self.__init__(data=corrmat, locs=data.get_locs(), n_subs=1,kernal=self.kernal,
+                        gpu=self.gpu,rbf_width=self.rbf_width,density_parms=self.density_parms,radi=self.radi)
             elif isinstance(data, np.ndarray):
                 assert not (locs is None), 'must specify model locations'
                 assert locs.shape[0] == data.shape[0], 'number of locations must match the size of the given correlation matrix'
@@ -192,7 +220,11 @@ class Model(object):
                 template = load(template)
             assert type(template) == Nifti, 'template must be a Nifti object or a path to a Nifti object'
             bo = Brain(template)
-            rbf_weights = _log_rbf(bo.get_locs(), self.locs, width=self.rbf_width)
+            if self.kernal == "stationary": 
+                rbf_weights = _log_rbf(bo.get_locs(), self.locs, width=self.rbf_width)
+            elif self.kernal == "density":
+                rbf_weights, radi = _log_density_rbf(bo.get_locs(),self.locs,self.density_parms["n_neighbors"],self.density_parms["tau"],
+                                                     self.density_parms["sigma"],self.density_parms["max"])
             Z = self.get_model(z_transform=True)
             Zp = _zero_pad_corrmat(Z, self.locs, locs)
             self.numerator, self.denominator = _blur_corrmat(Z, Zp,
@@ -201,7 +233,11 @@ class Model(object):
         elif not (locs is None): #blur correlation matrix out to locs
             if (isinstance(data, Brain) or isinstance(data, Model)): #self.locs may now conflict with locs
                 if not ((locs.shape[0] == self.locs.shape[0]) and np.allclose(locs, self.locs)):
-                    rbf_weights = _log_rbf(locs, self.locs, width=self.rbf_width)
+                    if self.kernal == "stationary":
+                        rbf_weights = _log_rbf(locs, self.locs, width=self.rbf_width)
+                    elif self.kernal == "density":
+                        rbf_weights, radi = _log_density_rbf(locs,self.locs,self.density_parms["n_neighbors"],self.density_parms["tau"],
+                                                       self.density_parms["sigma"],self.density_parms["max"])
                     Z = self.get_model(z_transform=True)
                     Zp = _zero_pad_corrmat(Z, self.locs, locs)
                     self.numerator, self.denominator = _blur_corrmat(Z, Zp,
@@ -440,7 +476,10 @@ class Model(object):
         """
         print('Number of locations: ' + str(self.n_locs))
         print('Number of subjects: ' + str(self.n_subs))
-        print('RBF width: ' + str(self.rbf_width))
+        if self.kernal == "stationary":
+            print('Kernal Type: ' + self.kernal + " with RBF width = " + str(self.rbf_width))
+        elif self.kernal == "density":
+            print('Kernal Type: ' + self.kernal + " with parameters of " + str(self.density_parms))
         print('Date created: ' + str(self.date_created))
         print('Meta data: ' + str(self.meta))
 
@@ -516,7 +555,10 @@ class Model(object):
             'n_subs' : self.n_subs,
             'meta' : self.meta,
             'date_created' : self.date_created,
-            'rbf_width' : self.rbf_width
+            'kernal' : self.kernal,
+            'rbf_width' : self.rbf_width,
+            'density_parms' : self.density_parms,
+            'radi' : self.radi
         }
 
         if fname[-3:]!='.mo':
@@ -555,8 +597,13 @@ class Model(object):
             self.meta = meta
             self.date_created = date_created
         else:
-            return Model(numerator=numerator, denominator=denominator, locs=locs,
-                         n_subs=n_subs, meta=meta, date_created=date_created, rbf_width=self.rbf_width)
+            return Model(numerator=numerator, denominator=denominator, locs=locs, kernal=self.kernal,n_subs=n_subs, 
+                         meta=meta, date_created=date_created, rbf_width=self.rbf_width,density_parms=self.density_parms,
+                         radi=self.radi)
+        
+    def get_radi(self):
+        print("This model is using a "+self.kernal+" kernal")
+        return self.radi
 
     def __add__(self, other):
         """
@@ -584,7 +631,12 @@ class Model(object):
         m1 = self
         m2 = other
 
-        assert m1.rbf_width == m2.rbf_width
+        if self.kernal == "stationary":
+            assert m1.rbf_width == m2.rbf_width
+        elif self.kernal == "density":
+            # Do I Need anything here?
+            pass
+        
 
         locs = _union(m1.get_locs(), m2.get_locs())
 
@@ -607,9 +659,15 @@ class Model(object):
 
         m2_z[np.where(np.isnan(m2_z))] = 0
         np.fill_diagonal(m2_z, 1)
-
-        return Model(data=_z2r(np.divide(np.subtract(m1_z,m2_z), (m1.n_subs-m2.n_subs))),
+        
+        if self.kernal == "stationary":
+            final_mo = Model(data=_z2r(np.divide(np.subtract(m1_z,m2_z), (m1.n_subs-m2.n_subs))),
                      locs=locs, n_subs=m1.n_subs - m2.n_subs, meta=meta, rbf_width=m1.rbf_width)
+        elif self.kernal == "density":
+            final_mo = Model(data=_z2r(np.divide(np.subtract(m1_z,m2_z), (m1.n_subs-m2.n_subs))),
+                     locs=locs, n_subs=m1.n_subs - m2.n_subs, meta=meta, kernal=self.kernal,
+                     density_parms=self.density_parms,radi=self.radi)
+        return final_mo
 
 
 
