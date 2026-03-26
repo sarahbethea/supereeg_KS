@@ -634,7 +634,7 @@ class Model(object):
         if self.kernal == "stationary":
             assert m1.rbf_width == m2.rbf_width
         elif self.kernal == "density":
-            # Do I Need anything here?
+            # Do I Need anything here? It works without it?
             pass
         
 

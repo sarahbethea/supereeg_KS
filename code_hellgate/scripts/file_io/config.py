@@ -33,4 +33,3 @@ config['walltime'] = '02:00:00'  # maximum runtime, in h:MM:SS
 config['cmd_wrapper'] = "python"  # replace with actual command wrapper (e.g. matlab, python, etc.)
 config['modules'] = "(\"python/3.13\")"  # separate each module with a space and enclose in (escaped) double quotes
 # ====== MODIFY ONLY THE CODE BETWEEN THESE LINES ======
-
