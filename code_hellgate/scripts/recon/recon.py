@@ -6,6 +6,7 @@ import sys
 import os
 from config import config
 from bandbrain import BandBrain
+import json
 bo_fname = sys.argv[1]
 
 freq = bo_fname.split('_')[-1].split('.bo')[0]
@@ -24,7 +25,33 @@ elec_ind = int(sys.argv[2])
 
 model_template = sys.argv[3]
 
-radius = sys.argv[4]
+kernal = sys.argv[4]
+params = sys.argv[5]
+
+# Remove curly braces and split by comma
+content = params.strip('{}')
+pairs = content.split(',')
+
+kernal_parms = {}
+for pair in pairs:
+    key, value = pair.split(':')
+    # Clean up any whitespace
+    key = key.strip()
+    value = value.strip()
+    
+    # Try to convert to int/float if possible
+    try:
+        if '.' in value:
+            value = float(value)
+        else:
+            value = int(value)
+    except ValueError:
+        # Keep as string if not a number
+        pass
+    
+    kernal_parms[key] = value
+
+print(kernal_parms)  # Output: {'rbf_width': 1, 'kernel': 'rbf', 'C': 10}
 
 # mo_mo_fname = os.path.join(config['modeldir'], model_template + '_' + radius, file_name + '.mo')
 mo_mo_fname = os.path.join(config['modeldir'], file_name + '.mo')
@@ -33,7 +60,7 @@ mo_mo = se.load(mo_mo_fname)
 # ave_dir = os.path.join(config['avedir'], model_template+ '_' + radius)
 ave_dir = os.path.join(config['avedir'])
 
-ave ='ave_mat_' + freq + '.mo'
+ave ='ave_mat_' + freq +"_" +kernal+'.mo'
 mo = se.load(os.path.join(ave_dir, ave))
 
 R = mo.get_locs().values
@@ -99,7 +126,10 @@ else:
 
 if not os.path.exists(recon_outfile_within):
 
-    Model = se.Model(bo, locs=R_K_subj)
+    if kernal == "stationary":
+        Model = se.Model(bo, locs=R_K_subj, kernal=kernal,rbf_width=float(kernal_parms["rbf_width"]))
+    elif kernal == "density":
+        Model = se.Model(bo, locs=R_K_subj, kernal=kernal,density_parms=kernal_parms)
 
     m_locs = Model.get_locs().values
     known_inds, unknown_inds, e_ind = known_unknown(m_locs, R_K_removed, m_locs, elec_ind)

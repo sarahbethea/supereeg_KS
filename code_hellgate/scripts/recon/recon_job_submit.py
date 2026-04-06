@@ -60,12 +60,13 @@ print('num of remaining jobs: ' + str(len(file_nums)))
 # options for model: 'pyFR_union', 'example_model', 'gray'
 model = str('pyFR_union')
 
-radius = sys.argv[1]
+kernal = sys.argv[1]
+kernal_parms = sys.argv[2]
 
-job_commands = list(map(lambda x: x[0]+ " " +str(x[1][0])+ " " +str(x[1][1])+ " " + model + " " + radius, zip([job_script]* len(file_nums), file_nums)))
+job_commands = list(map(lambda x: x[0]+ " " +str(x[1][0])+ " " +str(x[1][1])+ " " + model + " " + kernal+" "+kernal_parms, zip([job_script]* len(file_nums), file_nums)))
 
 # job_names should specify the file name of each script (as a list, of the same length as job_commands)
-job_names = list(map(lambda x: os.path.splitext(os.path.basename(x[0]))[0]+"_"+str(x[1])+"_" + model+ "_" + radius + '.sh', file_nums))
+job_names = list(map(lambda x: os.path.splitext(os.path.basename(x[0]))[0]+"_"+str(x[1])+"_" + model+ "_" + kernal + '.sh', file_nums))
 
 
 
@@ -176,7 +177,7 @@ if (socket.gethostname() == 'sarahbethea'):
                 #run('echo \"' + cp.stdout + '\"', shell=True)
 
 else:
-    max_jobs = 15
+    max_jobs = 25
     runnin_jobs = 0
     job_manager = slurmjobmanager.SlurmJobManager(max_jobs=max_jobs, user="jc158347",error_log_file="recon_errors.log")
 

@@ -1,12 +1,4 @@
-/mnt/beegfs/hellgate/home/jc158347/.conda/envs/supereeg_env/lib/python3.13/site-packages/supereeg/model.py:602: UserWarning: solution unstable
-  warnings.warn('solution unstable')
-/mnt/beegfs/hellgate/home/jc158347/.conda/envs/supereeg_env/lib/python3.13/site-packages/supereeg/model.py:602: UserWarning: solution unstable
-  warnings.warn('solution unstable')
-/mnt/beegfs/hellgate/home/jc158347/.conda/envs/supereeg_env/lib/python3.13/site-packages/supereeg/model.py:602: UserWarning: solution unstable
-  warnings.warn('solution unstable')
-/mnt/beegfs/hellgate/home/jc158347/.conda/envs/supereeg_env/lib/python3.13/site-packages/supereeg/model.py:602: UserWarning: solution unstable
-  warnings.warn('solution unstable')
-/mnt/beegfs/hellgate/home/jc158347/.conda/envs/supereeg_env/lib/python3.13/site-packages/supereeg/model.py:602: UserWarning: solution unstable
-  warnings.warn('solution unstable')
-/mnt/beegfs/hellgate/home/jc158347/.conda/envs/supereeg_env/lib/python3.13/site-packages/supereeg/model.py:602: UserWarning: solution unstable
-  warnings.warn('solution unstable')
+/mnt/beegfs/hellgate/home/jc158347/.conda/envs/supereeg_env/lib/python3.13/site-packages/supereeg/helpers.py:30: FutureWarning: The import path 'nilearn.input_data' is deprecated in version 0.9. Importing from 'nilearn.input_data' will be possible at least until release 0.13.0. Please import from 'nilearn.maskers' instead.
+  from nilearn.input_data import NiftiMasker
+/mnt/beegfs/hellgate/home/jc158347/.conda/envs/supereeg_env/lib/python3.13/site-packages/supereeg/helpers.py:30: FutureWarning: The import path 'nilearn.input_data' is deprecated in version 0.9. Importing from 'nilearn.input_data' will be possible at least until release 0.13.0. Please import from 'nilearn.maskers' instead.
+  from nilearn.input_data import NiftiMasker

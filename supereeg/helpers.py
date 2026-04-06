@@ -40,6 +40,8 @@ try:
 except:
     from itertools import izip_longest as zip_longest
 
+from sklearn.neighbors import NearestNeighbors
+
 
 def _std(res=None):
     """
@@ -312,7 +314,7 @@ def _r2z(r):
     return 0.5 * (np.log(1 + r) - np.log(1 - r))
 
 
-def _log_rbf(to_coords, from_coords, width=20):
+def _log_rbf(to_coords, from_coords, width):
     """
     Radial basis function
 
@@ -337,6 +339,67 @@ def _log_rbf(to_coords, from_coords, width=20):
     assert width > 0, 'RBF width must be positive'
     weights = -cdist(to_coords, from_coords, metric='euclidean') ** 2 / float(width)
     return weights
+
+
+def density(n_by_3_Locs, nearest_n, tau):
+    """
+        Calculates the density of the nearest n neighbors
+        Parameters
+        ----------
+        n_by_3_Locs : ndarray
+            Array of electrode locations - one for each row
+        nearest_n : int
+            Number of nearest neighbors to consider in density calculation
+        Returns
+        ----------
+        results : ndarray
+            Denisity for each electrode location
+        """
+    nbrs = NearestNeighbors(n_neighbors=nearest_n, algorithm='ball_tree').fit(n_by_3_Locs)
+    distances, indices = nbrs.kneighbors(n_by_3_Locs)
+    return np.exp(-tau*(distances.sum(axis=1)))
+
+def compute_radi(density,sigma,max):
+    radi = np.round(float(sigma)/(density+.0001))
+    radi = np.where(radi >= max,max,radi)
+    #radi = np.where(radi <= np.min(radi),1,radi) min seems to make model worse, needs more testing
+    return radi
+
+def get_radi(to_coords, from_coords,n_neighbors,tau,sigma,max):
+    n_neighbors = int(n_neighbors)
+    to_coords_den = density(to_coords,n_neighbors,tau=tau)
+    from_coords_den = density(from_coords,n_neighbors,tau=tau)
+
+    to_coords_radi = compute_radi(to_coords_den,sigma=sigma,max=max)
+    from_coords_radi = compute_radi(from_coords_den,sigma=sigma,max=max)
+
+    all_radi = (to_coords_radi[:, np.newaxis] + from_coords_radi[np.newaxis, :]) / 2
+    
+    return all_radi
+
+def _log_density_rbf(to_coords, from_coords, n_neighbors = 10,tau = .05,sigma = .01, max=5):
+    """
+    Radial basis function based on density of given locations
+
+    Parameters
+    ----------
+    to_coords : ndarray
+        Series of all coordinates (one per row) - R_full
+
+    c : ndarray
+        Series of subject's coordinates (one per row) - R_subj
+
+
+    Returns
+    ----------
+    results : ndarray
+        Matrix of log rbf weights for each subject coordinate for all coordinates
+
+    """
+    radi = get_radi(to_coords=to_coords,from_coords=from_coords,
+                    n_neighbors=n_neighbors,tau=tau,sigma=sigma,max=max)
+    weights = -cdist(to_coords, from_coords, metric='euclidean') ** 2 / radi
+    return weights, radi
 
 
 def tal2mni(r):
@@ -940,7 +1003,7 @@ def _near_neighbor(bo, mo, match_threshold='auto'): #TODO: should this be part o
         nbo.locs.iloc[min_ind[0], :] = mo.locs.iloc[min_ind[1], :]
         d[min_ind[0]] = np.inf
         d[:, min_ind[1]] = np.inf
-    if not match_threshold in (0, none):
+    if not match_threshold in (0, None):
 
         if match_threshold == 'auto':
             v_size = _vox_size(mo.locs)
@@ -1640,19 +1703,9 @@ def _brain_to_nifti(bo, nii_template, antialiasing=False): #FIXME: this is incre
                     data[round_locs[i, 0], round_locs[i, 1], round_locs[i, 2], :],
                     counts[round_locs[i, 0], round_locs[i, 1], round_locs[i, 2], :])
     else:
-        if len(Y.shape) <= 2: # This allows plot.py to work, allowing to use MNI standard brain to plot datat
-            if len(Y) <= 1: 
-                for i in range(R.shape[0]):
-                    data[round_locs[i, 0], round_locs[i, 1], round_locs[i, 2],:] += Y[:, i] 
-                    counts[round_locs[i, 0], round_locs[i, 1], round_locs[i, 2],:] += 1
-            else:
-                for i in range(R.shape[0]):
-                    data[round_locs[i, 0], round_locs[i, 1], round_locs[i, 2],:] += Y[i]
-                    counts[round_locs[i, 0], round_locs[i, 1], round_locs[i, 2],:] += 1
-        else:
-            for i in range(R.shape[0]):
-                data[round_locs[i, 0], round_locs[i, 1], round_locs[i, 2], :] += Y[:, i] 
-                counts[round_locs[i, 0], round_locs[i, 1], round_locs[i, 2], :] += 1
+        for i in range(R.shape[0]):
+            data[round_locs[i, 0], round_locs[i, 1], round_locs[i, 2], :] += Y[:, i] 
+            counts[round_locs[i, 0], round_locs[i, 1], round_locs[i, 2], :] += 1
 
         with np.errstate(invalid='ignore'):
             if len(Y.shape) <= 2:
