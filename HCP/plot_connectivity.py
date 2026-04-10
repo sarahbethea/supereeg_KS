@@ -32,16 +32,20 @@ def plot_conn_matrix_poster(conn, subject_id, out_path):
     # Log-transform to compress the dynamic range
     log_conn = np.log1p(conn)
 
-    # Clip color scale at 99th percentile so outliers don't crush the rest
+    # Clip color scale at 95th percentile so the bulk of connections look dark
     vmin = 0
-    vmax = np.percentile(log_conn[log_conn > 0], 99) if (log_conn > 0).any() else 1
+    vmax = np.percentile(log_conn[log_conn > 0], 95) if (log_conn > 0).any() else 1
 
-    # White (no connection) → red (strong connection)
+    # Power norm: gamma < 1 makes faint connections much more visible
+    # 0.2 is aggressive — even weak connections will show as visible red
+    norm = mcolors.PowerNorm(gamma=0.2, vmin=vmin, vmax=vmax)
+
+    # White (no connection) → dark red (strong connection)
     cmap = mcolors.LinearSegmentedColormap.from_list(
-        "white_red", ["white", "red"]
+        "white_darkred", ["white", "#8B0000"]
     )
 
-    im = ax.imshow(log_conn, cmap=cmap, vmin=vmin, vmax=vmax,
+    im = ax.imshow(log_conn, cmap=cmap, norm=norm,
                    interpolation="nearest")
 
     cbar = plt.colorbar(im, ax=ax, fraction=0.046, pad=0.04)
