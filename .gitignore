@@ -1,6 +1,8 @@
 HCP/rfMRI/
 HCP/results
 HCP/DWI
+HCP/DWI_results
+HCP/supereeg_locs.npy
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

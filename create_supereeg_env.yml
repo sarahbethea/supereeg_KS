@@ -21,6 +21,5 @@ dependencies:
   - imageio
   - pytest
   - pytables
-  - sh
   - notebook
   - cupy
