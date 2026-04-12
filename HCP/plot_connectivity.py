@@ -40,12 +40,7 @@ def plot_conn_matrix_poster(conn, subject_id, out_path):
     # 0.2 is aggressive — even weak connections will show as visible red
     norm = mcolors.PowerNorm(gamma=0.2, vmin=vmin, vmax=vmax)
 
-    # White (no connection) → dark red (strong connection)
-    cmap = mcolors.LinearSegmentedColormap.from_list(
-        "white_darkred", ["white", "#8B0000"]
-    )
-
-    im = ax.imshow(log_conn, cmap=cmap, norm=norm,
+    im = ax.imshow(log_conn, norm=norm,
                    interpolation="nearest")
 
     cbar = plt.colorbar(im, ax=ax, fraction=0.046, pad=0.04)
